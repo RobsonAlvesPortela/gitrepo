@@ -736,7 +736,7 @@ class Calculadora {
                         {
                             numberBeforeOperation = parseFloat(calculationPerformed[i-1]);
                         
-                            numberAfterOperation = parseFloat(calculationPerformed[1+1]);
+                            numberAfterOperation = parseFloat(calculationPerformed[i+1]);
         
                             result = numberBeforeOperation / numberAfterOperation;
         
