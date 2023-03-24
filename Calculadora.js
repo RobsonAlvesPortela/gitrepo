@@ -1,6 +1,7 @@
 class Calculadora {
 
     #screen;
+    #result;
     #openparenhteses
    
     
@@ -8,11 +9,22 @@ class Calculadora {
     constructor() {
         this.#screen = undefined;
         this.#openparenhteses = undefined;
+        this.#result = undefined;
     }
 
    set OpenParentheses(_openParentheses)
    {
         this.#openparenhteses = _openParentheses;
+   }
+
+   set Result(result)
+   {
+    this.result = result;
+   }
+
+   get Result()
+   {
+        return this.result;
    }
 
    get OpenParentheses()
@@ -35,6 +47,8 @@ class Calculadora {
             let botoes = document.querySelectorAll('input');
 
             this.#screen = document.getElementById('tela');
+
+            this.result = document.getElementById("resultado");
 
             this.#openparenhteses = document.getElementById('parentheses_open');
 
@@ -819,6 +833,35 @@ class Calculadora {
 
     }
 
+    checkNumbersNegativeInCalculation(_calculation)
+    {
+        let calculation = [..._calculation];
+        let calculationWithNumbersNegative = [..._calculation];
+
+
+        for(let i = 0; i < calculation.length; i++)
+        {
+            let debug = calculationWithNumbersNegative[i];
+
+            console.log(debug)
+            if(calculationWithNumbersNegative[i]==='-')
+            {
+                if(this.checkCharacterIsAOpeningParentheses(calculationWithNumbersNegative[i-1]) || this.checkCharacterIsAOperator(calculationWithNumbersNegative[i-1]) || calculationWithNumbersNegative[i-1] === undefined)
+                {
+                    let numberNegative = [];
+                    numberNegative.push(calculationWithNumbersNegative[i]);
+                    numberNegative.push(calculationWithNumbersNegative[i+1])
+                    let numberNegativeConverted = parseFloat(numberNegative.join(''));
+
+                    calculationWithNumbersNegative.splice(i, 2, numberNegativeConverted);
+                }
+            }
+        }
+
+        return calculationWithNumbersNegative;
+
+    }
+
 
     calculateExpression()
     {
@@ -889,6 +932,10 @@ class Calculadora {
                                 }
                                 else
                                 {
+                                    if(calculation.includes('-'))
+                                    {
+                                        calculation = [...this.checkNumbersNegativeInCalculation([...calculation])];
+                                    }
 
                                     if(calculation.length === 1)
                                     {
@@ -950,7 +997,7 @@ class Calculadora {
 
         
 
-        console.log(result);
+        this.Result.textContent = result;
 
     }
 
