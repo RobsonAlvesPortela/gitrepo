@@ -184,7 +184,7 @@ class Calculadora {
         }
             
         
-        this.splitScreenByParentheses();
+        
     }
 
     changeOp(op) {
@@ -351,6 +351,53 @@ class Calculadora {
                 
             }
 
+            let numbersMoreThanOneDigit = [];
+
+            for(let i = 0; i < textScreenSplitted.length;i++)
+            {
+                
+                let debug = !this.checkCharacterIsAOperator(textSplittedWithoutSpace[i]);
+                let debu2 = !isNaN(textSplittedWithoutSpace[i]);
+                let debu3 = !this.checkCharacterIsAOpeningParentheses(textSplittedWithoutSpace[i]);
+                let debug4 = textSplittedWithoutSpace[i];
+                console.log(debug);
+                console.log(debu2);
+                console.log(debu3);
+
+                if(textScreenSplitted[i] !== undefined)
+                {
+
+                
+                    if(!this.checkCharacterIsAOperator(textSplittedWithoutSpace[i]) && !this.checkCharacterIsAOpeningParentheses(textSplittedWithoutSpace[i]) && !isNaN(textSplittedWithoutSpace[i]))
+                    {
+                        
+                        numbersMoreThanOneDigit.push(textSplittedWithoutSpace[i]);
+
+                    }
+                    else
+                    {
+                        if(!isNaN(numbersMoreThanOneDigit.join('')))
+                        {
+                            let convert = parseFloat(numbersMoreThanOneDigit.join(''));
+                            if(!isNaN(convert))
+                            {
+                                textSplittedWithoutSpace.splice(i-numbersMoreThanOneDigit.length, numbersMoreThanOneDigit.length, convert)
+                            }
+                           
+                            
+                            numbersMoreThanOneDigit.length = 0;
+                        }
+                        else
+                        {
+                            i=0;
+                            numbersMoreThanOneDigit.length = 0;
+                            continue;
+                        }
+                        
+                    }   
+                }
+            }
+            console.log(textSplittedWithoutSpace);
             return [...textSplittedWithoutSpace];
     }
 
