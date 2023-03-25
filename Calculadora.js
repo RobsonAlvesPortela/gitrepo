@@ -355,14 +355,6 @@ class Calculadora {
 
             for(let i = 0; i < textScreenSplitted.length;i++)
             {
-                
-                let debug = !this.checkCharacterIsAOperator(textSplittedWithoutSpace[i]);
-                let debu2 = !isNaN(textSplittedWithoutSpace[i]);
-                let debu3 = !this.checkCharacterIsAOpeningParentheses(textSplittedWithoutSpace[i]);
-                let debug4 = textSplittedWithoutSpace[i];
-                console.log(debug);
-                console.log(debu2);
-                console.log(debu3);
 
                 if(textScreenSplitted[i] !== undefined)
                 {
