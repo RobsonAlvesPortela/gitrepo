@@ -1,71 +1,93 @@
+#organizador {
 
-
-#organizador{
-    
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     padding-top: 10vw;
+    margin: auto;
 }
 
-#calculadora{
-    background-color: grey;
-    display:block;  
+#calculadora {
+    background-color: hsl(0, 0%, 50%, 0.2);
+    display: block;
     padding: 0 25px 25px 25px;
     border-radius: 1vw;
+    width: 385px;
 }
 
-#tela{
+header>h1 {
+    text-align: center;
+}
+
+#resultado {
+    height: 10px;
+    margin-bottom: 30px;
+}
+
+#botoes {
+    display: flex;
+    flex-direction: row;
+}
+
+#tela {
     padding: 0px 0px 0px 0px;
     margin-bottom: 0;
     display: block;
+    height: 40px;
+
 }
 
-#container_numeros{
+#container_numeros,
+#containder_operadores {
     padding: 0px;
-    display: flexbox;
+    display: flex;
     flex-direction: row;
-    min-width: 10vw;
+    flex-wrap: wrap;
     max-width: 20vw;
+    align-items: center;
+    justify-content: center;
 }
 
-.numero{
-    max-height: 10vw;
-    min-height: 5vw;
-    min-width: 5vw;
-    max-width: 10vw;
+.numero,
+.botao,
+.operador {
+    /* max-height: 10vw;
+    min-height: 5vw; */
+    height: 50px;
+    /* min-width: 5vw; */
+    width: 50px;
     border-width: 0.3vw;
     border-radius: 1vw;
-    font-size: 4vw;
+    font-size: 18px;
     border-color: darkgray;
 }
 
-#container_screen{
+#container_screen {
     background-color: ghostwhite;
     border-radius: 0.25vw;
-    margin: 0px;
+    margin-bottom: 25px;
     padding: 0 0 0 0.5vw;
     display: flex;
     justify-content: left;
     align-items: center;
-    
+
     min-height: 3vw;
     max-height: 6vw;
     font-size: 2em;
 }
 
-#parentheses_open{
+#parentheses_open {
     padding: 0px 0px 0px 0px;
     margin-bottom: 0;
     color: lightgray;
     margin: 0px;
 }
 
-.parenteses_fechado{
+.parenteses_fechado {
     color: black;
 }
 
-.operador{
+/* .operador {
     font-size: 3vw;
-}
+} */
