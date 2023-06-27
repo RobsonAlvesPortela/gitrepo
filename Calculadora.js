@@ -88,7 +88,7 @@ class Calculadora {
 
                 if (botao.value === ')') {
                     botao.addEventListener('click', (event) => {
-                        this.closeParenteses();
+                        this.closeParenthesesCurrent();
                     });
                 };
 
@@ -657,13 +657,29 @@ class Calculadora {
                 if(lastTypeIsACloseParentheses)
                 {
                     textScreenSplitted.pop();
-                    this.openParentheses();
+                    this.openingParentheses();
                 }
             }
         }
 
        this.Screen.textContent = textScreenSplitted.join('');
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     inputParentheses() {
 
@@ -679,14 +695,14 @@ class Calculadora {
         if(screenText === '')
         {
             this.inputOnScreen('(')
-            this.openParentheses();
+            this.openingParentheses();
         }
         else
         {
             if(lastTypeIsAOppeningParentheses || lastTypeIsAOperator || lastTypeIsANegativeSignal || lastTypeIsADecimalPoint)
             {
                 this.inputOnScreen('(')
-                this.openParentheses();
+                this.openingParentheses();
             }
             else
             {
@@ -694,7 +710,7 @@ class Calculadora {
                 {
                     this.inputOp(' * ');
                     this.inputOnScreen('(');
-                    this.openParentheses();
+                    this.openingParentheses();
                 }
             }
 
@@ -703,13 +719,45 @@ class Calculadora {
         this.splitScreenByParentheses();
     }
 
-    openParentheses() {
+
+
+
+    
+    checkForOpenParentheses()
+    {
+        let thereAreOpenParentheses = false;
+
+        if(this.OpenParentheses.textContent !== '')
+        {
+            thereAreOpenParentheses = true;
+        }
+
+        return thereAreOpenParentheses;
+
+    }
+
+
+    openingParentheses() {
 
         this.OpenParentheses.textContent += ')';
 
     }
 
-    closeParenteses() {
+
+
+
+    closeAllParentheses()
+    {
+        let numberOfOpenParentheses = this.OpenParentheses.textContent.length;
+        console.log(numberOfOpenParentheses);
+        for(let i = 0; i < numberOfOpenParentheses; i++)
+        {
+            this.closeParenthesesCurrent();
+        }
+    }
+
+
+    closeParenthesesCurrent() {
 
         if(this.OpenParentheses.textContent !== '')
         {
@@ -728,6 +776,33 @@ class Calculadora {
         
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
     calculateOperations(_calculation)
     {
         let calculation = [..._calculation];
@@ -735,142 +810,175 @@ class Calculadora {
         let numberBeforeOperation = 0;
         let numberAfterOperation = 0;
         let result = 0;
+        let lastTypeIsAOperator = this.checkLastTypeIsAOperator();
+        console.log(calculationPerformed.length);
         
-
-
-        if(calculation.includes('^'))
+        if(calculation.length > 1)
         {
-            for(let i = 0; i < calculation.length; i++)
+
+            if(calculation.includes('^'))
             {
-                if(calculationPerformed[i] === '^')
+                for(let i = 0; i < calculation.length; i++)
                 {
-                    numberBeforeOperation = parseFloat(calculationPerformed[i-1]);
-                    
-                    numberAfterOperation = parseFloat(calculationPerformed[i+1]);
-
-                    result = numberBeforeOperation ** numberAfterOperation;
-
-                    calculationPerformed.splice((i-1), 3, result);
-
-                    i = 0;
-
+                    if(calculationPerformed[i] === '^')
+                    {
+                        numberBeforeOperation = parseFloat(calculationPerformed[i-1]);
+                        
+                        numberAfterOperation = parseFloat(calculationPerformed[i+1]);
+    
+                        result = numberBeforeOperation ** numberAfterOperation;
+    
+                        calculationPerformed.splice((i-1), 3, result);
+    
+                        i = 0;
+    
+                    }
                 }
             }
-        }
-
-        if(calculationPerformed.includes('*') || calculationPerformed.includes('/'))
-        {
-            calculationRightLeft:
-
-            for(let i = 0; i < calculation.length; i++)
+    
+            if(calculationPerformed.includes('*') || calculationPerformed.includes('/'))
             {
-
-
-                switch(calculationPerformed[i])
+                calculationRightLeft:
+    
+                for(let i = 0; i < calculation.length; i++)
                 {
-                    case '*':
-                    case '/':
-
-                        if( calculationPerformed[i] === '*')
-                        {
-                            numberBeforeOperation = parseFloat(calculationPerformed[i-1]);
-                        
-                            numberAfterOperation = parseFloat(calculationPerformed[i+1]);
-        
-                            result = numberBeforeOperation * numberAfterOperation;
-        
-                            calculationPerformed.splice((i-1), 3, result);
-        
-                            i = 0;
-                        }
-
-
-                        if(calculationPerformed[i] === '/')
-                        {
-                            numberBeforeOperation = parseFloat(calculationPerformed[i-1]);
-                        
-                            numberAfterOperation = parseFloat(calculationPerformed[i+1]);
-        
-                            result = numberBeforeOperation / numberAfterOperation;
-        
-                            calculationPerformed.splice((i-1), 3, result);
-        
-                            i = 0;
-                        }
-                        
-                        break;
-                    case undefined:
-
-                        
-                    break calculationRightLeft;
-
-
+    
+    
+                    switch(calculationPerformed[i])
+                    {
+                        case '*':
+                        case '/':
+    
+                            if( calculationPerformed[i] === '*')
+                            {
+                                numberBeforeOperation = parseFloat(calculationPerformed[i-1]);
+                            
+                                numberAfterOperation = parseFloat(calculationPerformed[i+1]);
+            
+                                result = numberBeforeOperation * numberAfterOperation;
+            
+                                calculationPerformed.splice((i-1), 3, result);
+            
+                                i = 0;
+                            }
+    
+    
+                            if(calculationPerformed[i] === '/')
+                            {
+                                numberBeforeOperation = parseFloat(calculationPerformed[i-1]);
+                            
+                                numberAfterOperation = parseFloat(calculationPerformed[i+1]);
+            
+                                result = numberBeforeOperation / numberAfterOperation;
+            
+                                calculationPerformed.splice((i-1), 3, result);
+            
+                                i = 0;
+                            }
+                            
+                            break;
+                        case undefined:
+    
+                            
+                        break calculationRightLeft;
+    
+    
+                    }
+    
                 }
-
+    
             }
-
-        }
-
-
-
-        if(calculationPerformed.includes('-') || calculationPerformed.includes('+'))
-        {
-            calculationRightLeft:
-
-            for(let i = 0; i < calculation.length; i++)
+    
+    
+    
+            if(calculationPerformed.includes('-') || calculationPerformed.includes('+'))
             {
-
-
-                switch(calculationPerformed[i])
+                calculationRightLeft:
+    
+                for(let i = 0; i < calculation.length; i++)
                 {
-                    case '+':
-                    case '-':
-
-                        if( calculationPerformed[i] === '-')
-                        {
-                            numberBeforeOperation = parseFloat(calculationPerformed[i-1]);
-                        
-                            numberAfterOperation = parseFloat(calculationPerformed[i+1]);
-        
-                            result = numberBeforeOperation - numberAfterOperation;
-        
-                            calculationPerformed.splice((i-1), 3, result);
-        
-                            i = 0;
-                        }
-
-
-                        if(calculationPerformed[i] === '+')
-                        {
-                            numberBeforeOperation = parseFloat(calculationPerformed[i-1]);
-                        
-                            numberAfterOperation =  parseFloat(calculationPerformed[i+1]);
-        
-        
-                            result = numberBeforeOperation + numberAfterOperation;
-        
-                            calculationPerformed.splice((i-1), 3, result);
-        
-                            i = 0;
-                        }
-                        
-                        break;
-                    case undefined:
-
-                        
-                    break calculationRightLeft;
-
-
+    
+    
+                    switch(calculationPerformed[i])
+                    {
+                        case '+':
+                        case '-':
+    
+                            if( calculationPerformed[i] === '-')
+                            {
+                                numberBeforeOperation = parseFloat(calculationPerformed[i-1]);
+                            
+                                numberAfterOperation = parseFloat(calculationPerformed[i+1]);
+            
+                                result = numberBeforeOperation - numberAfterOperation;
+            
+                                calculationPerformed.splice((i-1), 3, result);
+            
+                                i = 0;
+                            }
+    
+    
+                            if(calculationPerformed[i] === '+')
+                            {
+                                numberBeforeOperation = parseFloat(calculationPerformed[i-1]);
+                            
+                                numberAfterOperation =  parseFloat(calculationPerformed[i+1]);
+            
+            
+                                result = numberBeforeOperation + numberAfterOperation;
+            
+                                calculationPerformed.splice((i-1), 3, result);
+            
+                                i = 0;
+                            }
+                            
+                            break;
+                        case undefined:
+    
+                            
+                        break calculationRightLeft;
+    
+    
+                    }
+    
                 }
-
             }
+    
+            return calculationPerformed[0];
+
         }
+        else
+        {
 
-        console.log(calculationPerformed);
+            return calculationPerformed[0];
 
-        return calculationPerformed[0];
+
+        }
+        
+           
+              
+            
+        
+        
+
+
+
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     checkNumbersNegativeInCalculation(_calculation)
     {
@@ -904,140 +1012,175 @@ class Calculadora {
 
     calculateExpression()
     {
+        let checkForOpenParentheses = this.checkForOpenParentheses();
+
+        if(checkForOpenParentheses)
+        {
+
+            this.closeAllParentheses();
+        
+        }
+
+        let lastTypeIsAOppeningParentheses = this.checkLastTypeIsAOppeningParentheses();
+        let lastTypeIsAOperator = this.checkLastTypeIsAOperator();
+        let lastType = this.getLastType();
+
+        console.log(lastType)
+        console.log(lastTypeIsAOperator);
+        console.log(lastTypeIsAOppeningParentheses);
+        
+        
+        console.log(!lastTypeIsAOperator);
+        console.log(!lastTypeIsAOppeningParentheses);
+
         let textScreenSplittedByType = [...this.splitTextScreenByType()];
         let textScreenCalculated = [...this.splitTextScreenByType()];
         let calculation = [];
         let firstCalculationIndexPerformed = 0;
         let replaceCalculationWithResult = 0;
         let result = 0;
-
         
+
+
+
         outisideOfParenthesesLoop:
         if(textScreenSplittedByType.includes('('))
         {
-            for(let i = 0; i < textScreenSplittedByType.length; i++)
+            
+            if(textScreenCalculated[textScreenCalculated.length - 1] !== "(")
             {
-               
+                for(let i = 0; i < textScreenSplittedByType.length; i++)
+                {
+                    
 
 
 
-                if(textScreenCalculated[i] !== undefined)
-                {   
-                    if(!isNaN(textScreenCalculated[i]))
-                    {
-                        textScreenCalculated[i] = parseFloat(textScreenCalculated[i]);
-                    }
+                    if(textScreenCalculated[i] !== undefined)
+                    {   
+                        if(!isNaN(textScreenCalculated[i]))
+                        {
+                            textScreenCalculated[i] = parseFloat(textScreenCalculated[i]);
+                        }
 
-                    insideOfParenthesesLoop:
-                    for(let j = i+1; j < textScreenSplittedByType.length; j++)
-                    {
+                        insideOfParenthesesLoop:
+                        for(let j = i+1; j < textScreenSplittedByType.length; j++)
+                        {
 
-                        if(textScreenCalculated[i] !== undefined)
-                        { 
+                            if(textScreenCalculated[i] !== undefined)
+                            { 
 
-                            if(calculation.length > 0)
-                            {
-                                replaceCalculationWithResult++;
-                            }
-                            else
-                            {
-                                replaceCalculationWithResult = 0;
-                            }
-                            
-                            if(textScreenCalculated[j] !== '(' && textScreenCalculated[j] !== ')')
-                            {
-
-                                calculation.push(textScreenCalculated[j]);
-
-                            }
-                            
-                            if(textScreenCalculated[j] === '(')
-                            {
-                                firstCalculationIndexPerformed = j;
-                                calculation.length = 0;
-                                continue;
-                            }
-                        
-                            if(textScreenCalculated[j] === ')')
-                            {
-                                replaceCalculationWithResult++;
-                                if(calculation.length === 2 && calculation.includes('-'))
+                                if(calculation.length > 0)
                                 {
                                     replaceCalculationWithResult++;
-                                    result = parseFloat(calculation.join(''));
-                                    textScreenCalculated.splice(firstCalculationIndexPerformed, replaceCalculationWithResult, result);
-                                    console.log(result);
-                                    break insideOfParenthesesLoop;
                                 }
                                 else
                                 {
-                                    if(calculation.includes('-'))
-                                    {
-                                        calculation = [...this.checkNumbersNegativeInCalculation([...calculation])];
-                                    }
+                                    replaceCalculationWithResult = 0;
+                                }
+                                
+                                if(textScreenCalculated[j] !== '(' && textScreenCalculated[j] !== ')')
+                                {
 
-                                    if(calculation.length === 1)
+                                    calculation.push(textScreenCalculated[j]);
+
+                                }
+                                
+                                if(textScreenCalculated[j] === '(')
+                                {
+                                    firstCalculationIndexPerformed = j;
+                                    calculation.length = 0;
+                                    continue;
+                                }
+                            
+                                if(textScreenCalculated[j] === ')')
+                                {
+                                    replaceCalculationWithResult++;
+                                    if(calculation.length === 2 && calculation.includes('-'))
                                     {
                                         replaceCalculationWithResult++;
-                                        result = parseFloat(calculation[0]);
+                                        result = parseFloat(calculation.join(''));
                                         textScreenCalculated.splice(firstCalculationIndexPerformed, replaceCalculationWithResult, result);
+                                        console.log(result);
+                                        break insideOfParenthesesLoop;
                                     }
+                                    else
+                                    {
+                                        if(calculation.includes('-'))
+                                        {
+                                            calculation = [...this.checkNumbersNegativeInCalculation([...calculation])];
+                                        }
 
-                                    replaceCalculationWithResult++;
-                                    result = this.calculateOperations(calculation);
-                                    textScreenCalculated.splice(firstCalculationIndexPerformed, replaceCalculationWithResult, result);
-                                    calculation.length = 0;
-                                    i = 0;
-                                    j = 0;
-                                    replaceCalculationWithResult = 0;
-                                   
-                                    
-                                    
+                                        if(calculation.length === 1)
+                                        {
+                                            replaceCalculationWithResult++;
+                                            result = parseFloat(calculation[0]);
+                                            textScreenCalculated.splice(firstCalculationIndexPerformed, replaceCalculationWithResult, result);
+                                        }
+
+                                        replaceCalculationWithResult++;
+                                        result = this.calculateOperations(calculation);
+                                        textScreenCalculated.splice(firstCalculationIndexPerformed, replaceCalculationWithResult, result);
+                                        calculation.length = 0;
+                                        i = 0;
+                                        j = 0;
+                                        replaceCalculationWithResult = 0;
+                                        
+                                        
+                                        
+                                    }
+                                }
+
+                                if(textScreenCalculated.includes('('))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    break insideOfParenthesesLoop;
                                 }
                             }
+                        }
 
-                            if(textScreenCalculated.includes('('))
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                break insideOfParenthesesLoop;
-                            }
+                    
+                            
+                        
+
+                        if(textScreenCalculated.includes('('))
+                        {
+                            i = 0;
+                            continue;
+                        }
+                        else
+                        {
+                        
+                            result = this.calculateOperations(textScreenCalculated);
+                            break outisideOfParenthesesLoop;
                         }
                     }
-
-                
-                        
                     
-
-                    if(textScreenCalculated.includes('('))
-                    {
-                        i = 0;
-                        continue;
-                    }
-                    else
-                    {
                     
-                        result = this.calculateOperations(textScreenCalculated);
-                        break outisideOfParenthesesLoop;
-                    }
+                    
                 }
 
-            
-                
+                result = this.calculateOperations(textScreenCalculated);
+
+                this.Result.textContent = result;
+
+            }   
+            else
+            {
+                this.Result.textContent = "Erro";
             }
         }
         else
         {
             result = this.calculateOperations(textScreenCalculated);
+            this.Result.textContent = result;
+
+
         }
         
-
         
-
-        this.Result.textContent = result;
-
     }
 
 }
